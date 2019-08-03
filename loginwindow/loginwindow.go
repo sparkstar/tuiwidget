@@ -8,6 +8,11 @@ import (
 type LoginWindow struct {
 	*tui.Box
 	logo string
+
+	username *entry.LabeledEntry
+	password *entry.LabeledEntry
+
+	onSubmit func()
 }
 
 func createLabeledEntry(name string, mode tui.EchoMode) *entry.LabeledEntry {
@@ -38,5 +43,24 @@ func New(logo string) *LoginWindow {
 	return &LoginWindow{
 		Box:  window,
 		logo: logo,
+
+		username: user,
+		password: pass,
 	}
+}
+
+func (lw *LoginWindow) OnKeyEvent(ev tui.KeyEvent) {
+	if ev.Key == tui.KeyEnter {
+		lw.onSubmit()
+	}
+
+	lw.Box.OnKeyEvent(ev)
+}
+
+func (lw LoginWindow) GetText() (string, string) {
+	return lw.username.Text(), lw.password.Text()
+}
+
+func (lw *LoginWindow) OnSubmit(fn func()) {
+	lw.onSubmit = fn
 }

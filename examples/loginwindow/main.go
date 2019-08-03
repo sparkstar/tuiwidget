@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/marcusolsson/tui-go"
 	"github.com/sparkstar/tuiwidget/loginwindow"
 )
@@ -18,6 +20,9 @@ func main() {
 
 	loginWindow := loginwindow.New(logo)
 
+	loginWindow.OnSubmit(func() {
+		fmt.Println(loginWindow.GetText())
+	})
 	ui, _ := tui.New(loginWindow)
 	ui.SetKeybinding("Esc", func() { ui.Quit() })
 
